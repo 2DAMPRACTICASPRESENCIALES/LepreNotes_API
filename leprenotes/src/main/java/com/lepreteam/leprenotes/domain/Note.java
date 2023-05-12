@@ -34,7 +34,7 @@ public class Note {
     @Column
     @NotNull
     @NotBlank(message = "content is required")
-    private byte[] content;
+    private String content;
 
     @Column
     @NotNull
