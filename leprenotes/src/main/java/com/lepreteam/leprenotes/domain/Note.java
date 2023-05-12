@@ -2,15 +2,15 @@ package com.lepreteam.leprenotes.domain;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import jakarta.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -45,7 +45,7 @@ public class Note {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "orders")
+    @OneToMany(mappedBy = "note")
     @JsonBackReference(value = "note_order")
     private List<Order> orders;
 }

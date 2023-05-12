@@ -2,15 +2,15 @@ package com.lepreteam.leprenotes.domain;
 
 import java.time.LocalDate;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Data
 @AllArgsConstructor
