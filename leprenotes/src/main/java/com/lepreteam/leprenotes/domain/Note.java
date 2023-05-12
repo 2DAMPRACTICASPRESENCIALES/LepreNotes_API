@@ -33,6 +33,11 @@ public class Note {
 
     @Column
     @NotNull
+    @NotBlank(message = "content is required")
+    private byte[] content;
+
+    @Column
+    @NotNull
     @NotBlank(message = "school year is required")
     private String schoolYear;
 
