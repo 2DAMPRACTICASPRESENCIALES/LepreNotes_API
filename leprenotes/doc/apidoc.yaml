@@ -1,0 +1,786 @@
+openapi: 3.0.1
+servers:
+  - url: https://api.leprenotes.com
+info:
+  description: API para la gestión de la aplicación LepreNotes
+  version: "1.0"
+  title: LepreNotes API
+tags:
+  - name: Reviews
+    description: Operations about reviews
+  - name: Users
+    description: Operations about users
+  - name: Notes
+    description: Operations about notes
+  - name: Orders
+    description: Operations about orders
+paths:
+  /reviews:
+    get:
+      tags:
+        - Reviews
+      summary: Reviews list
+      description: Get info about all the reviews
+      operationId: getReviews
+      responses:
+        '200':
+          description: Get info about all the reviews
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReviewInfo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Reviews
+      summary: Reviews register
+      description: Register a new review
+      operationId: addReview
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewInDTO'
+      responses:
+        '201':
+          description: The review has been posted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Reviews
+      summary: Delete a review
+      description: Delete a review with the id in the URL
+      operationId: deleteReview
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /reviews/{userId}/user:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      tags:
+        - Reviews
+      summary: Get the reviews of a particular user
+      description: Get the reviews with the user id in the URL
+      operationId: getReviewsByUserId
+      responses:
+        '200':
+          description: Get the reviews info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewInfo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Users list
+      description: Get the info about the users
+      operationId: getUsers
+      responses:
+        '200':
+          description: Get the user list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Users
+      summary: Register a user
+      description: Register a new user
+      operationId: addUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInDTO'
+      responses:
+        '201':
+          description: The user has been posted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /users/{userId}:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      tags:
+        - Users
+      summary: Get the info about an specific user
+      description: Get the user with the id in the URL
+      operationId: getUserById
+      responses:
+        '200':
+          description: Get the user info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Users
+      summary: Update the info about an specific user
+      description: Update the info about the user with the id in the URL
+      operationId: updateUser
+      responses:
+        '200':
+          description: Get the info about the user 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Users
+      summary: Delete a user
+      description: Delete a user with the id in the URL
+      operationId: deleteUser
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /notes:
+    get:
+      tags:
+        - Notes
+      summary: Notes list
+      description: Get lsit about all the notes
+      operationId: getNotes
+      responses:
+        '200':
+          description: Get the notes list successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Note'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Notes
+      summary: Register a note
+      description: Register a new note
+      operationId: addNote
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteInDTO'
+      responses:
+        '201':
+          description: The note has been posted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /notes/{noteId}:
+    parameters:
+      - $ref: '#/components/parameters/NoteId'
+    get:
+      tags:
+        - Notes
+      summary: Get the info about an specific note
+      description: Get the note with the id in the URL
+      operationId: getNoteById
+      responses:
+        '200':
+          description: Get the info about the note
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteInfo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Notes
+      summary: update the info about an specific note
+      description: Update the info about the note with the id in the URL
+      operationId: modifyNote
+      responses:
+        '200':
+          description: Get the info about the note
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteInfo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Notes
+      summary: Delete a note
+      description: Delete a note with the id in the URL
+      operationId: deleteNote
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /notes/{userId}/user:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      tags:
+        - Notes
+      summary: Get the notes of a particular user
+      description: Get the notes with the user id in the URL
+      operationId: getNotesByUserId
+      responses:
+        '200':
+          description: Get the notes info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteInfo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /orders:
+    get:
+      tags:
+        - Orders
+      summary: Get order list
+      description: Get the info about all the orders
+      operationId: getOrders
+      responses:
+        '200':
+          description: Get the order list successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - Orders
+      summary: Add an order
+      description: Add a new order
+      operationId: postOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderInDTO'
+      responses:
+        '201':
+          description: The order has been posted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /orders/{orderId}:
+    parameters:
+      - $ref: '#/components/parameters/OrderId' 
+    delete: 
+      tags:
+        - Orders
+      summary: Delete an order
+      description: Delete an order with the id in the URL
+      operationId: deleteOrder
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /orders/{userId}/user:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      tags:
+        - Notes
+      summary: Get the orders of a particular user
+      description: Get the orders with the user id in the URL
+      operationId: getOrdersByUserId
+      responses:
+        '200':
+          description: Get the orders info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderInfo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    Review:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Review Id
+          example: 1
+        description:
+          type: string
+          description: Review description
+          example: Nice communication and content
+        datePost:
+          type: object
+          description: Review date post
+          example: 15-10-2023
+        rating:
+          type: number
+          description: Review rating
+          example: 8
+        isReported:
+          type: boolean
+          description: Verify if the review is reported
+          example: false
+    ReviewInDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        description:
+          type: string
+          example: Nice communication and content
+        datePost:
+          type: object
+          example: 15-10-2023
+        rating:
+          type: number
+          example: 8
+        isReported:
+          type: boolean
+          example: false
+    User:
+      type: object
+      properties:
+        id:
+          type: number
+          description: User id
+          example: 1
+        username:
+          type: string
+          description: User name
+          example: nando1903
+        email:
+          type: string
+          description: User email
+          example: nando@test.com
+        password:
+          type: string
+          description: User password
+          example: As45v
+    UserInDTO:
+      type: object
+      properties:
+        username:
+          type: string
+          description: User name
+          example: nando1903
+        email:
+          type: string
+          description: User email
+          example: nando@test.com
+        password:
+          type: string
+          description: User password
+          example: As45v
+    Note:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Note Id
+          example: 1
+        title:
+          type: string
+          description: Note title
+          example: Algoritmic notes
+        subject:
+          type: string
+          description: Note subject
+          example: Algorithmics
+        price:
+          type: number
+          description: Price number
+          example: 35
+        schoolYear:
+          type: string
+          description: Note school year
+          example: Second year of carreer
+        content:
+          type: string
+          format: binary
+          description: Bite array with the file info
+          example: pdf
+        user_id:
+          type: number
+          description: User id about the notes
+          example: 1
+    NoteInDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        title:
+          type: string
+          example: Algoritmic notes
+        subject:
+          type: string
+          example: Algorithmics
+        price:
+          type: number
+          example: 35
+        schoolYear:
+          type: string
+          example: Second year of carreer
+        content:
+          type: string
+          format: binary
+          example: pdf
+        user_id:
+          type: number
+          example: 1
+    Order:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Order Id
+          example: 1
+        code:
+          type: string
+          description: Order code security
+          example: sdfb344yfy3fgyhb
+        datePost:
+          type: object
+          description: Order date post
+          example: 15-10-2023
+        isCancelled:
+          type: boolean
+          description: Verify if the order is cancelled
+          example: false
+        user_id:
+          type: number
+          description: User id
+          example: 1
+        note_id:
+          type: number
+          description: Note id
+          example: 1
+    OrderInDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        code:
+          type: string
+          example: sdfb344yfy3fgyhb
+        datePost:
+          type: object
+          example: 15-10-2023
+        isCancelled:
+          type: boolean
+          example: false
+        user_id:
+          type: number
+          example: 1
+        note_id:
+          type: number
+          example: 1
+    ReviewInfo:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ReviewInDTO'
+      properties:
+        id:
+          type: number
+          description: Review Id
+          example: 1
+        description:
+          type: string
+          description: Review description
+          example: Nice communication and content
+        datePost:
+          type: object
+          description: Review date post
+          example: 15-10-2023
+        rating:
+          type: number
+          description: Review rating
+          example: 8
+        isReported:
+          type: boolean
+          description: Verify if the review is reported
+          example: false
+    UserInfo:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/UserInDTO'
+      properties:
+        id:
+          type: number
+          description: User id
+          example: 1
+        username:
+          type: string
+          description: User name
+          example: nando1903
+        email:
+          type: string
+          description: User email
+          example: nando@test.com
+        password:
+          type: string
+          description: User password
+          example: As45v
+    NoteInfo:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/NoteInDTO'
+      properties:
+        id:
+          type: number
+          description: Note Id
+          example: 1
+        title:
+          type: string
+          description: Note title
+          example: Algoritmic notes
+        subject:
+          type: string
+          description: Note subject
+          example: Algorithmics
+        price:
+          type: number
+          description: Price number
+          example: 35
+        schoolYear:
+          type: string
+          description: Note school year
+          example: Second year of carreer
+        content:
+          type: string
+          format: binary
+          description: Bite array with the file info
+          example: pdf
+        user_id:
+          type: number
+          description: User id about the notes
+          example: 1
+    OrderInfo:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/OrderInDTO'
+      properties:
+        id:
+          type: number
+          description: Order Id
+          example: 1
+        code:
+          type: string
+          description: Order code security
+          example: sdfb344yfy3fgyhb
+        datePost:
+          type: object
+          description: Order date post
+          example: 15-10-2023
+        isCancelled:
+          type: boolean
+          description: Verify if the order is cancelled
+          example: false
+        user_id:
+          type: number
+          description: User id
+          example: 1
+        note_id:
+          type: number
+          description: Note id
+          example: 1
+    BadRequest:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Código de estado
+          example: 400
+        message:
+          type: string
+          description: Mensaje de error
+          example: Error de validación
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorField'
+    ErrorField:
+      type: object
+      description: Error de validación en un campo de entrada
+      properties:
+        fieldName:
+          type: string
+          description: El campo donde se ha producido el error
+          example: capacity
+        message:
+          type: string
+          description: Mensaje de error asociado con el campo
+          example: capacity must be greater than 0
+    NotFound:
+      type: object
+      properties:
+        code:
+          type: string
+          description: código de estado
+          example: 404
+        message:
+          type: string
+          description: Mensaje de error
+          example: User not found
+    InternalServerError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Código de estado
+          example: 500
+        message:
+          type: string
+          description: Mensaje de error
+          example: Internal Server Error
+  responses:
+    NoContent:
+      description: No Content
+    BadRequest:
+      description: Error de validación
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BadRequest'
+    NotFound:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotFound'
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InternalServerError'
+  parameters:
+    ReviewId:
+      name: reviewId
+      in: path
+      description: Review ID
+      required: true
+      schema:
+        type: integer
+    UserId:
+      name: userId
+      in: path
+      description: User ID
+      required: true
+      schema:
+        type: integer
+    NoteId:
+      name: noteId
+      in: path
+      description: Note ID
+      required: true
+      schema:
+        type: integer
+    OrderId:
+      name: orderId
+      in: path
+      description: Order ID
+      required: true
+      schema:
+        type: integer
