@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,24 +30,30 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
+    private final Logger logger = LoggerFactory.getLogger(ReviewController.class);
+
     @GetMapping("/reviews")
     public ResponseEntity<List<Review>> getReviews() {
+        logger.info("Begin get reviews");
         return new ResponseEntity<>(reviewService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/reviews/{user_id}/users")
     public ResponseEntity<List<Review>> getReviewsByUserId(@PathVariable long user_id) throws NotFoundException {
+        logger.info("Begin get reviews by user Id");
         return new ResponseEntity<>(reviewService.getReviewsByUserId(user_id), HttpStatus.OK);
     }
 
     @PostMapping("/reviews")
     public ResponseEntity<Review> addReview(@RequestBody Review review) throws NotFoundException {
+        logger.info("Begin post reviews");
         Review newReview = reviewService.addReview(review);
         return ResponseEntity.status(HttpStatus.CREATED).body(newReview);
     }
 
     @DeleteMapping("/reviews/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable long id) throws NotFoundException {
+        logger.info("Begin delete reviews");
         reviewService.deleteReview(id);
         return ResponseEntity.noContent().build();
     }

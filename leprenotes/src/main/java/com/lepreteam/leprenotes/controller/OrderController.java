@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,24 +29,30 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    private final Logger logger = LoggerFactory.getLogger(OrderController.class);
+
     @GetMapping("/orders")
     public ResponseEntity<List<Order>> getOrders() {
+        logger.info("Begin get orders");
         return new ResponseEntity<>(orderService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/orders/{user_id}/users")
     public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable long user_id) throws NotFoundException {
+        logger.info("Begin get order by user id");
         return new ResponseEntity<>(orderService.getOrdersByUserId(user_id), HttpStatus.OK);
     }
 
     @PostMapping("/orders")
     public ResponseEntity<Order> addOrder(@RequestBody Order order) throws NotFoundException {
+        logger.info("Begin post orders");
         Order newOrder = orderService.addOrders(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(newOrder);
     }
 
     @DeleteMapping("/orders/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable long id) throws NotFoundException {
+        logger.info("Begin delete orders by Id");
         orderService.deleteOrder(id);
         return ResponseEntity.noContent().build();
     }

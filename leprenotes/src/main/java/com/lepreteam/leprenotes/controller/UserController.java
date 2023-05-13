@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,31 +30,37 @@ import com.lepreteam.leprenotes.service.UserService;
 public class UserController {
     @Autowired
     private UserService userService;
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getUsers() {
+        logger.info("Begin get users");
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable long id) throws NotFoundException {
+        logger.info("Begin get users by id");
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
     @PostMapping("/users")
     public ResponseEntity<User> addUser(@RequestBody User user) {
+        logger.info("Begin post users");
         User newUser = userService.addUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable long id) throws NotFoundException {
+        logger.info("Begin get users by id");
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/users/{id}")
     public ResponseEntity<User> modifyUser(@PathVariable long id, @RequestBody User user) throws NotFoundException{
+        logger.info("Begin put users by Id");
         User userModified = userService.modifyUser(id, user);
         return ResponseEntity.status(HttpStatus.OK).body(userModified);
     }
